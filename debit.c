@@ -108,6 +108,7 @@ int main(int argc, char **argv){
 	int date = TRUE;
 	char *interface;
 	struct tm *tm;
+	int first = 1;
 
 	i = 1;
 	while(i < argc){
@@ -268,20 +269,24 @@ int main(int argc, char **argv){
 			t_old[intc]   = t_cur;
 			t_p_old[intc] = t_p_cur;
 
-			if(aff == AFF_SCREEN){
-				printf("%10s: %15s %15s\n", args[0],
-				       outputa, outputb);
-			}
-			
-			else if(strcmp(args[0], interface) == 0) {
-				if(date == TRUE){
-					printf("%02d:%02d:%02d ",
-					       tm->tm_hour,
-					       tm->tm_min,
-					       tm->tm_sec);
+			if (first == 0) {
+
+				if(aff == AFF_SCREEN){
+					printf("%10s: %15s %15s\n", args[0],
+					       outputa, outputb);
 				}
-				printf("%s %s\n",
-				       outputa, outputb);
+			
+				else if(strcmp(args[0], interface) == 0) {
+					if(date == TRUE){
+						printf("%02d:%02d:%02d ",
+						       tm->tm_hour,
+						       tm->tm_min,
+						       tm->tm_sec);
+					}
+					printf("%s %s\n",
+					       outputa, outputb);
+				}
+
 			}
 
 			// next interface
@@ -302,6 +307,7 @@ int main(int argc, char **argv){
 	
 		// a plus
 		select(0, NULL, NULL, NULL, &sleep);
+		first = 0;
 	}	
 	
 }
