@@ -78,7 +78,7 @@ void usage(void) {
 	       "\t-t inter:  temps entre deux affichages t en secondes (defaut = 3)\n"
 	       "\t-x         temps au format epoch\n"
 	       "\n");
-exit(1);
+	exit(1);
 }
 
 int main(int argc, char **argv){
