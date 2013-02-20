@@ -3,6 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <time.h>
+
 #include <sys/time.h>
 #include <sys/select.h>
 #include <sys/types.h>
@@ -100,6 +101,8 @@ int main(int argc, char **argv){
 	int aff = AFF_SCREEN;
 	char outputa[32];
 	char outputb[32];
+	char outputpa[32];
+	char outputpb[32];
 	struct timeval next;
 	struct timeval current;
 	struct timeval sleep;
@@ -194,7 +197,7 @@ int main(int argc, char **argv){
 				       tm->tm_min,
 				       tm->tm_sec);
 			}
-			printf(" Interface:         Receive            Sent\n");
+			printf(" Interface:         Receive     Receive pkt            Sent        Sent pkt\n");
 		}
 		while(feof(fd) == 0){
 			memset(buf, 0, BUFSIZE);
@@ -232,6 +235,7 @@ int main(int argc, char **argv){
 			temp -= r_p_old[intc];
 			if (r_p_cur < r_p_old[intc])
 				temp += ULONG_MAX;
+			myround(outputpa, temp);
 			temp *= mul;
 			temp += r_cur;
 			temp -= r_old[intc];
@@ -255,6 +259,7 @@ int main(int argc, char **argv){
 			temp -= t_p_old[intc];
 			if (t_p_cur < t_p_old[intc])
 				temp += ULONG_MAX;
+			myround(outputpb, temp);
 			temp *= mul;
 			temp += t_cur;
 			temp -= t_old[intc];
@@ -272,8 +277,8 @@ int main(int argc, char **argv){
 			if (first == 0) {
 
 				if(aff == AFF_SCREEN){
-					printf("%10s: %15s %15s\n", args[0],
-					       outputa, outputb);
+					printf("%10s: %15s %15s %15s %15s\n", args[0],
+					       outputa, outputpa, outputb, outputpb);
 				}
 			
 				else if(strcmp(args[0], interface) == 0) {
@@ -283,8 +288,8 @@ int main(int argc, char **argv){
 						       tm->tm_min,
 						       tm->tm_sec);
 					}
-					printf("%s %s\n",
-					       outputa, outputb);
+					printf("%s %s %s %s\n",
+					       outputa, outputpa, outputb, outputpb);
 				}
 
 			}
