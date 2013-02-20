@@ -112,6 +112,7 @@ int main(int argc, char **argv){
 	char *interface;
 	struct tm *tm;
 	int first = 1;
+	unsigned int lines = 0;
 
 	i = 1;
 	while(i < argc){
@@ -282,6 +283,10 @@ int main(int argc, char **argv){
 				}
 			
 				else if(strcmp(args[0], interface) == 0) {
+					if (lines % 20 == 0)
+						fprintf(stderr, "\n# time %s(ikb ipk okb opk)\n", interface);
+					lines++;
+
 					if(date == TRUE){
 						printf("%02d:%02d:%02d ",
 						       tm->tm_hour,
