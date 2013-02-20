@@ -76,6 +76,7 @@ void usage(void) {
 	       "\t-d:        undisplay date\n"
 	       "\t-l int:    affichage en ligne (stats) precise l'interface\n"
 	       "\t-t inter:  temps entre deux affichages t en secondes (defaut = 3)\n"
+	       "\t-x         temps au format epoch\n"
 	       "\n");
 exit(1);
 }
@@ -113,6 +114,7 @@ int main(int argc, char **argv){
 	struct tm *tm;
 	int first = 1;
 	unsigned int lines = 0;
+	int epoch = 0;
 
 	i = 1;
 	while(i < argc){
@@ -154,7 +156,11 @@ int main(int argc, char **argv){
 					if(i >= argc) usage();
 					interface = argv[i];
 					break;
-					
+
+				case 'x':
+					epoch = 1;
+					break;
+
 				default:
 					usage();
 					break;
@@ -193,10 +199,13 @@ int main(int argc, char **argv){
 		if(aff == AFF_SCREEN){
 			printf("\033[H\033[2J");
 			if(date == TRUE){
-				printf("%02d:%02d:%02d\n",
-				       tm->tm_hour,
-				       tm->tm_min,
-				       tm->tm_sec);
+				if (epoch)
+					printf("%lu\n", current.tv_sec);
+				else
+					printf("%02d:%02d:%02d\n",
+					       tm->tm_hour,
+					       tm->tm_min,
+					       tm->tm_sec);
 			}
 			printf(" Interface:         Receive     Receive pkt            Sent        Sent pkt\n");
 		}
@@ -288,10 +297,13 @@ int main(int argc, char **argv){
 					lines++;
 
 					if(date == TRUE){
-						printf("%02d:%02d:%02d ",
-						       tm->tm_hour,
-						       tm->tm_min,
-						       tm->tm_sec);
+						if (epoch)
+							printf("%lu ", current.tv_sec);
+						else
+							printf("%02d:%02d:%02d ",
+							       tm->tm_hour,
+							       tm->tm_min,
+							       tm->tm_sec);
 					}
 					printf("%s %s %s %s\n",
 					       outputa, outputpa, outputb, outputpb);
