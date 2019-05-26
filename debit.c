@@ -1,3 +1,11 @@
+/*
+ * Copyright 2010-2018 Thierry FOURNIER
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version
+ * 2 of the License.
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -307,6 +315,7 @@ int main(int argc, char **argv){
 					}
 					printf("%s %s %s %s\n",
 					       outputa, outputpa, outputb, outputpb);
+					fflush(stdout);
 				}
 
 			}
